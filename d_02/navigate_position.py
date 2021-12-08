@@ -24,11 +24,11 @@ def calculate_position(pos_movements, aim:int=0, use_aim:bool=False):
     print(f"Depth: {depth}")
     return horizontal_pos*depth
 
-with open("navigate_input", 'r') as inF:
+if __name__ == "__main__":
+    # Read in our navigation history
+    with open("navigate_input", 'r') as inF:
     position_instructions = inF.readlines()
 
-
-if __name__ == "__main__":
     # To solve Part A:
     print("Solution to Day 02 Part A")
     final_depth_hor = calculate_position(position_instructions, use_aim=False)
