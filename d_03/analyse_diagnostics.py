@@ -1,0 +1,36 @@
+from typing import List
+
+def find_gamma_rate(bin_list: List):
+    gamma_rate = ""
+    for i in range(12):
+        bit_list = [x[i] for x in bin_list]
+        most_freq = max(set(bit_list), key = bit_list.count)
+        gamma_rate = gamma_rate + most_freq
+
+    return gamma_rate
+
+def find_epsilon_rate(bin_list: List):
+    epsilon_rate = ""
+    for i in range(12):
+        bit_list = [x[i] for x in bin_list]
+        least_freq = min(set(bit_list), key = bit_list.count)
+        epsilon_rate = epsilon_rate + least_freq
+    
+    return epsilon_rate
+
+
+if __name__=="__main__":
+    with open("diagnostic_report", 'r') as inF:
+            diagnostic_bin = inF.readlines()
+
+    # Solution to Day 3 Part A
+    print("Solution for Part A")
+    gamma = find_gamma_rate(diagnostic_bin)
+    epsilon = find_epsilon_rate(diagnostic_bin)
+    print(f"Gamma Rate: {gamma} ({int(gamma,2)})")
+    print(f"Epsilon Rate: {epsilon} ({int(epsilon, 2)})")
+    final = int(gamma, 2)*int(epsilon, 2)
+    print(f"Final Result: {final}")
+    print()
+
+    # Solution to Day 3 Part B
