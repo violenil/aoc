@@ -17,6 +17,11 @@ def find_epsilon_rate(bin_list: List):
         epsilon_rate = epsilon_rate + least_freq
     
     return epsilon_rate
+def find_ox_gen_rating():
+
+
+def find_co2_scrub_rating():
+
 
 
 if __name__=="__main__":
@@ -29,8 +34,9 @@ if __name__=="__main__":
     epsilon = find_epsilon_rate(diagnostic_bin)
     print(f"Gamma Rate: {gamma} ({int(gamma,2)})")
     print(f"Epsilon Rate: {epsilon} ({int(epsilon, 2)})")
-    final = int(gamma, 2)*int(epsilon, 2)
-    print(f"Final Result: {final}")
+    power_consumption = int(gamma, 2)*int(epsilon, 2)
+    print(f"Final Result: {power_consumption}")
     print()
 
     # Solution to Day 3 Part B
+    print("Solution for Part B")
