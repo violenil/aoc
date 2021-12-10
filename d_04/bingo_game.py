@@ -22,38 +22,42 @@ def create_boards(lines: List):
             board.append(int_row)
     return boards
 
-def mark_boards(boards: List, number: int):
-    marked_boards = []
-    for board in boards:
-        marked_board = []
-        for row in board:
-            marked_row = ['x' if n == number else n for n in row]
-            marked_board.append(marked_row)
-        marked_boards.append(marked_board)
-    return marked_boards
+def check_bingo(boards, draws, win_idx):
+    # win_idx is a list containing the winning board index
+    # and its score
+    # list is sorted such that the first entry contains the
+    # first winning board
+    # if board already in the list, dont add again
+    # return an updated win_idx
 
-def check_bingo(boards):
     for b in range(len(boards)):
+        alread_won = [x[0] for x in win_idx]
+        if b in alread_won:
+            continue
+
         board = boards[b]
         for row in board:
-            c = row.count('x')
-            if c == 5:
-                return board, b
+            c = [x for x in row if x in draws]
+            if len(c) == 5:
+                score = calculate_bingo_score(board, draws)
+                win_idx.append([b, score])
         for i in range(5):
-            c_x = ['x' for n in board if n[i] == 'x' ]
+            c_x = [n for n in board if n[i] in draws ]
             if len(c_x) == 5:
-                return board, b
-    return None
+                score = calculate_bingo_score(board, draws)
+                win_idx.append([b, score])
 
-def calculate_bingo_score(marked_board:List, original_board:List, last_num:int):
+    return win_idx
+
+def calculate_bingo_score(original_board:List, draws:List):
     score_nums = []
-    for r in range(len(marked_board)):
-        row = marked_board[r]
+    for r in range(len(original_board)):
+        row = original_board[r]
         for n in range(len(row)):
-            if row[n] != 'x':
+            if row[n] not in drawed:
                 score_nums.append(original_board[r][n])
     
-    return sum(score_nums)*last_num
+    return sum(score_nums)*drawed[-1]
 
 
 if __name__ == "__main__":
@@ -72,15 +76,14 @@ if __name__ == "__main__":
         lines = inF.readlines()
         boards = create_boards(lines)
     
-    marked_boards = boards.copy()
+    win_boards_idx_score = []
+    drawed = []
     for lucky_number in draws:
-        marked_boards = mark_boards(marked_boards, lucky_number)
-        if check_bingo(marked_boards) == None:
-            continue
-        else:
-            win_board, b = check_bingo(marked_boards)
-            final_score = calculate_bingo_score(win_board, boards[b], lucky_number)
-            print("Bingo!")
-            print("Final score: ", final_score)
-            break
+        drawed.append(lucky_number)
+        win_boards_idx_score = check_bingo(boards, drawed, win_boards_idx_score)
+    
+    # Solution for Part A
+    print(f"First board to win final score: {win_boards_idx_score[0][1]}")
 
+    # Solution for Part B
+    print(f"Last board to win final score: {win_boards_idx_score[-1][1]}")
